@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>보임 BOIM — 챗GPT에 물으면, 경쟁사만 나옵니다 | AI 검색 가시성 실측 진단</title>
+<meta name="description" content="보임(BOIM)은 ChatGPT·Perplexity·Gemini 등 AI 검색 답변에서 브랜드가 인용되는지 600회 반복 실측하고 95% 신뢰구간과 함께 보고하는 GEO 진단 서비스입니다. 한국 ChatGPT 사용자는 2,240만 명 — 당신의 브랜드는 AI에게 보입니까?">
+<meta property="og:title" content="보임 BOIM — 챗GPT에 물으면, 경쟁사만 나옵니다">
+<meta property="og:description" content="AI 검색 답변 속 브랜드 인용을 반복 실측(질의 50 × 엔진 4 × 반복 3)하고 오차범위와 함께 보고합니다. 무료 진단 선착 5팀.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%232a78d6'/><text x='50' y='66' font-size='48' font-weight='800' text-anchor='middle' fill='white' font-family='sans-serif'>보</text></svg>">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"GEO(생성형 엔진 최적화)가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"GEO는 ChatGPT·Perplexity·Gemini 같은 AI 검색 엔진의 답변에 브랜드가 인용되도록 최적화하는 작업입니다. 학술 통제실험(KDD 2024)에서 콘텐츠에 통계·인용·출처를 추가하면 AI 답변 가시성이 최대 40% 상승함이 검증됐습니다."},
+{"@type":"Question","name":"보임(BOIM)은 무엇을 측정하나요?","acceptedAnswer":{"@type":"Answer","text":"고객이 실제로 묻는 질문 50개를 AI 엔진 4종에 각 3회씩 총 600회 실행해, 브랜드 언급률(95% 신뢰구간), 경쟁사 대비 점유율, AI가 근거로 쓴 인용원 도메인, 탈락 지점을 측정합니다. 원자료 600행 CSV를 전량 공개합니다."},
+{"@type":"Question","name":"직접 ChatGPT에 물어보는 것과 무엇이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"AI의 답변은 확률적이라 매번 달라집니다. 한 번의 질문은 주사위 1회와 같습니다. 보임은 같은 질문을 반복 실행하고 여론조사처럼 오차범위를 붙여 보고하며, 개선 후 같은 질문 세트로 재측정해 변화가 우연인지 통계 검정(z-검정)으로 판정합니다."}]}
+</script>
+<style>
+  :root{--s1:#2a78d6;--s1soft:#cde2fb;--ink:#0b0b0b;--ink2:#52514e;--mut:#898781;--grid:#e1e0d9;
+    --base:#c3c2b7;--bg:#f9f9f7;--card:#fcfcfb;--ring:rgba(11,11,11,.10);--crit:#d03b3b;--good:#006300;
+    --navy1:#0e2a4d;--navy2:#0b1626}
+  @media(prefers-color-scheme:dark){:root{--s1:#3987e5;--s1soft:#184f95;--ink:#fff;--ink2:#c3c2b7;--mut:#898781;
+    --grid:#2c2c2a;--base:#383835;--bg:#0d0d0d;--card:#1a1a19;--ring:rgba(255,255,255,.10);--good:#0ca30c}}
+  :root[data-theme="light"]{--s1:#2a78d6;--s1soft:#cde2fb;--ink:#0b0b0b;--ink2:#52514e;--mut:#898781;--grid:#e1e0d9;
+    --base:#c3c2b7;--bg:#f9f9f7;--card:#fcfcfb;--ring:rgba(11,11,11,.10);--crit:#d03b3b;--good:#006300}
+  :root[data-theme="dark"]{--s1:#3987e5;--s1soft:#184f95;--ink:#fff;--ink2:#c3c2b7;--mut:#898781;--grid:#2c2c2a;
+    --base:#383835;--bg:#0d0d0d;--card:#1a1a19;--ring:rgba(255,255,255,.10);--crit:#d03b3b;--good:#0ca30c}
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  .w{max-width:920px;margin:0 auto;padding:0 22px}
+  a{color:var(--s1)}
+  /* nav */
+  nav{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--grid);z-index:10}
+  nav .w{display:flex;align-items:center;gap:16px;padding:12px 22px}
+  .logo{font-weight:800;font-size:20px;text-decoration:none;color:var(--ink)}
+  .logo b{color:var(--s1)}
+  nav .links{margin-left:auto;display:flex;gap:16px;align-items:center;font-size:13.5px}
+  nav .links a{color:var(--ink2);text-decoration:none}
+  nav .links a:hover{color:var(--ink)}
+  .ghost{font-size:12px;color:var(--ink2);background:var(--card);border:1px solid var(--ring);border-radius:8px;padding:5px 10px;cursor:pointer}
+  /* hero */
+  .hero{padding:72px 0 40px;text-align:left}
+  .kicker{display:inline-block;font-size:12.5px;font-weight:700;color:var(--s1);border:1px solid var(--s1);
+    border-radius:999px;padding:4px 12px;margin-bottom:18px}
+  h1{font-size:clamp(30px,5.6vw,50px);line-height:1.18;letter-spacing:-.03em;font-weight:800}
+  h1 .under{box-shadow:inset 0 -0.28em 0 var(--s1soft)}
+  .hero p.lede{font-size:clamp(16px,2.2vw,19px);color:var(--ink2);max-width:640px;margin:20px 0 28px}
+  .cta{appearance:none;border:0;cursor:pointer;background:var(--s1);color:#fff;font:700 16px/1 system-ui,sans-serif;
+    padding:16px 26px;border-radius:11px;text-decoration:none;display:inline-block}
+  .cta:hover{filter:brightness(1.07)}
+  .cta.sec{background:transparent;color:var(--s1);border:1.5px solid var(--s1)}
+  .heroctas{display:flex;gap:12px;flex-wrap:wrap}
+  .micro{font-size:12.5px;color:var(--mut);margin-top:12px}
+  /* stat strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:48px 0 0}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--card);border:1px solid var(--ring);border-radius:13px;padding:16px}
+  .stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .stat span{font-size:12px;color:var(--ink2);line-height:1.5;display:block;margin-top:4px}
+  .stat .src{color:var(--mut);font-size:11px}
+  /* sections */
+  section{padding:64px 0 8px}
+  .eyebrow{font-size:12.5px;font-weight:700;color:var(--s1);letter-spacing:.04em;margin-bottom:8px}
+  h2{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.02em;line-height:1.3;margin-bottom:10px}
+  .sub{color:var(--ink2);max-width:640px;margin-bottom:26px}
+  .card{background:var(--card);border:1px solid var(--ring);border-radius:15px;padding:24px}
+  /* demo widget */
+  .scanform{display:grid;gap:12px;max-width:540px}
+  .scanform label{font-size:12.5px;font-weight:600;color:var(--ink2);display:block;margin-bottom:5px}
+  .scanform input,.scanform select{width:100%;padding:12px;font-size:15px;border:1px solid var(--base);border-radius:9px;background:var(--bg);color:var(--ink)}
+  .scanform input:focus,.scanform select:focus{outline:2px solid var(--s1);outline-offset:1px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  .simtag{font-size:11.5px;color:var(--mut);border:1px dashed var(--base);border-radius:7px;padding:2px 8px;display:inline-block;margin-bottom:12px}
+  #theater{display:none}
+  #theater.on{display:block}
+  .tprog{height:6px;background:var(--grid);border-radius:999px;overflow:hidden;margin:12px 0 14px}
+  .tprog i{display:block;height:100%;width:0%;background:var(--s1);border-radius:999px;transition:width .35s}
+  .tlog{font:12.5px/1.9 ui-monospace,Menlo,monospace;color:var(--ink2);max-height:170px;overflow:hidden}
+  .tlog div{opacity:0;transform:translateY(4px);transition:all .3s}
+  .tlog div.show{opacity:1;transform:none}
+  #reveal{display:none}
+  #reveal.on{display:block}
+  .vk{display:inline-flex;gap:7px;font-size:12.5px;font-weight:700;padding:4px 11px;border-radius:999px;border:1px solid var(--ring);margin-bottom:12px}
+  .vk.crit{color:var(--crit)}.vk.warn{color:#b45309}.vk.good{color:var(--good)}
+  h3.verdict{font-size:clamp(20px,3.4vw,27px);line-height:1.3;letter-spacing:-.02em;margin-bottom:6px}
+  .vsub{color:var(--ink2);font-size:14.5px;max-width:560px}
+  .hero-num{font-size:56px;font-weight:800;line-height:1;margin-top:18px}
+  .hero-cap{font-size:12px;color:var(--mut);margin-top:4px}
+  .killer{margin-top:16px;padding:13px 15px;border-left:3px solid var(--crit);background:var(--bg);border-radius:0 10px 10px 0;font-size:14.5px}
+  .brow{display:grid;grid-template-columns:88px 1fr 128px;gap:10px;align-items:center;margin:9px 0}
+  .bl{font-size:13px;font-weight:600;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .btrack{position:relative;height:14px;background:var(--bg);border-radius:4px}
+  .bfill{position:absolute;left:0;top:1px;bottom:1px;border-radius:0 4px 4px 0;background:var(--base);min-width:2px}
+  .brow.me .bfill{background:var(--s1)}.brow.me .bl{color:var(--ink)}
+  .ci{position:absolute;top:50%;height:2px;background:var(--mut);transform:translateY(-50%)}
+  .bv{font-size:12px;color:var(--ink2)}.bv em{color:var(--mut);font-style:normal}
+  .legend{display:flex;gap:16px;font-size:12px;color:var(--mut);margin-top:8px}
+  .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .axcap{font-size:11.5px;color:var(--mut)}
+  /* method */
+  .m4{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(max-width:700px){.m4{grid-template-columns:1fr}}
+  .m4 .card b{font-size:15.5px}
+  .m4 .card p{font-size:13.5px;color:var(--ink2);margin-top:6px}
+  .m4 .card .n{display:inline-flex;width:26px;height:26px;border-radius:8px;background:var(--s1);color:#fff;
+    align-items:center;justify-content:center;font-weight:800;font-size:13px;margin-bottom:10px}
+  /* gates */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{font-size:11.5px;color:var(--mut);font-weight:600;text-align:left;padding:8px;border-bottom:1px solid var(--base)}
+  td{padding:10px 8px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td b{font-size:14px}
+  td .d{font-size:12.5px;color:var(--ink2)}
+  /* pricing */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:820px){.plans{grid-template-columns:1fr}}
+  .plan{background:var(--card);border:1px solid var(--ring);border-radius:15px;padding:24px;display:flex;flex-direction:column}
+  .plan.hot{border:2px solid var(--s1);position:relative}
+  .plan.hot::before{content:"파일럿 선착 5팀 무료";position:absolute;top:-11px;left:20px;background:var(--s1);color:#fff;
+    font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
+  .plan h3{font-size:16px}
+  .plan .price{font-size:26px;font-weight:800;margin:8px 0 2px}
+  .plan .per{font-size:12px;color:var(--mut);margin-bottom:14px}
+  .plan ul{list-style:none;font-size:13.5px;color:var(--ink2);flex:1}
+  .plan li{padding:5px 0 5px 20px;position:relative}
+  .plan li::before{content:"✓";position:absolute;left:0;color:var(--s1);font-weight:700}
+  .plan .cta{margin-top:16px;text-align:center;font-size:14px;padding:13px}
+  /* faq */
+  details{border-bottom:1px solid var(--grid);padding:14px 0}
+  summary{font-weight:700;font-size:15px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+  summary::after{content:"+";color:var(--s1);font-weight:800}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--ink2);font-size:14px;margin-top:10px;max-width:680px}
+  /* footer */
+  footer{margin-top:72px;border-top:1px solid var(--grid);padding:28px 0 60px;font-size:12.5px;color:var(--mut);line-height:1.8}
+  /* modal */
+  #modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center;padding:20px}
+  #modal.on{display:flex}
+  .mbox{background:var(--card);border-radius:16px;max-width:440px;width:100%;padding:28px;border:1px solid var(--ring)}
+  .mbox h3{font-size:18px;margin-bottom:8px}
+  .mbox p{font-size:14px;color:var(--ink2)}
+  .mbox .cta{margin-top:16px;width:100%;text-align:center}
+</style>
+</head>
+<body>
+<nav><div class="w">
+  <a class="logo" href="#top">보<b>임</b> <span style="font-size:11px;color:var(--mut);font-weight:600">BOIM</span></a>
+  <div class="links">
+    <a href="#demo">데모</a><a href="#method">방법론</a><a href="#pricing">가격</a><a href="#faq">FAQ</a>
+    <button class="ghost" id="themeToggle">◐</button>
+  </div>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero w" id="top">
+  <span class="kicker">AI 검색 가시성 실측 진단 · GEO</span>
+  <h1>챗GPT에 물으면,<br><span class="under">경쟁사만 나옵니다.</span></h1>
+  <p class="lede">고객은 이제 검색창 대신 AI에게 묻습니다 — "OO 추천해줘". 보임은 그 대답에 당신의 브랜드가 나오는지 <b>600번 반복 실측</b>하고, 여론조사처럼 <b>오차범위와 함께</b> 보고합니다. 안 나온다면, 어느 관문에서 떨어졌고 무엇부터 고쳐야 하는지까지.</p>
+  <div class="heroctas">
+    <a class="cta" href="#demo">30초 데모 체험</a>
+    <button class="cta sec" onclick="applyPilot()">무료 정밀 진단 신청 — 선착 5팀</button>
+  </div>
+  <p class="micro">가입 없음 · 신용카드 없음 · 원자료 600행 CSV 전량 공개</p>
+
+  <div class="stats">
+    <div class="stat"><b>2,240만</b><span>한국 ChatGPT 앱 월 사용자 — 인구의 43%<i class="src"> · 와이즈앱 2026-01</i></span></div>
+    <div class="stat"><b>54.5%</b><span>"검색할 때 챗GPT를 쓴다" — 1년 새 +15%p<i class="src"> · 오픈서베이 n=2,000</i></span></div>
+    <div class="stat"><b>+42%</b><span>AI 경유 방문자의 구매 전환율 우위<i class="src"> · Adobe Analytics, 미국 리테일</i></span></div>
+    <div class="stat"><b>15%→8%</b><span>AI 요약이 뜨면 링크 클릭은 반토막<i class="src"> · Pew Research</i></span></div>
+  </div>
+</header>
+
+<!-- DEMO -->
+<section class="w" id="demo">
+  <p class="eyebrow">인터랙티브 데모</p>
+  <h2>당신의 브랜드로 30초 안에 확인하세요</h2>
+  <p class="sub">브랜드명을 넣으면 실측 진단이 어떻게 생겼는지 볼 수 있습니다. 실제 진단에서는 이 화면에 600회 실측 데이터가 그대로 흐릅니다.</p>
+  <div class="card">
+    <span class="simtag">⚠ 데모 수치는 시드 기반 시뮬레이션입니다 — 실측 아님 (같은 브랜드명 = 같은 결과)</span>
+    <div class="scanform" id="scanCard">
+      <div><label>브랜드명</label><input id="fBrand" placeholder="예: 미리캔버스" value="" autocomplete="off"></div>
+      <div class="row2">
+        <div><label>경쟁사 (비우면 자동)</label><input id="fComp" placeholder="예: 캔바" autocomplete="off"></div>
+        <div><label>업종</label><select id="fCat">
+          <option>온라인 디자인 툴</option><option>D2C 패션</option><option>B2B SaaS</option>
+          <option>피부과·의료</option><option>온라인 교육</option><option>핀테크</option><option>기타</option></select></div>
+      </div>
+      <button class="cta" id="runScan" style="margin-top:4px">데모 실행 — 30초</button>
+    </div>
+    <div id="theater" aria-live="polite">
+      <b id="theaterTitle" style="font-size:15px">측정 중…</b>
+      <div class="tprog"><i id="tbar"></i></div>
+      <div class="tlog" id="tlog"></div>
+    </div>
+    <div id="reveal">
+      <span class="vk" id="vKicker"></span>
+      <h3 class="verdict" id="vHead"></h3>
+      <p class="vsub" id="vSub"></p>
+      <div class="hero-num" id="vScore">–</div>
+      <div class="hero-cap">AI 가시성 점수 (0–100) · 데모: 질의 12 × 엔진 2 시뮬레이션</div>
+      <div class="killer" id="vKiller"></div>
+      <div style="margin-top:20px">
+        <b style="font-size:13.5px;color:var(--ink2)">추천형 질문 언급률 — 신규 고객이 묻는 방식</b>
+        <p class="axcap">언급률(%) · 오차막대 = Wilson 95% 신뢰구간 · 시뮬레이션</p>
+        <div id="barRows"></div>
+        <div class="legend"><span><i class="sw" style="background:var(--s1)"></i>내 브랜드</span><span><i class="sw" style="background:var(--base)"></i>경쟁사</span></div>
+        <p class="axcap" id="vTypeNote" style="margin-top:10px"></p>
+      </div>
+      <p style="margin-top:16px;font-size:14px;color:var(--ink2)" id="vFact"></p>
+      <div class="heroctas" style="margin-top:20px">
+        <button class="cta" onclick="applyPilot()">실제로 측정하기 — 무료 진단 신청</button>
+        <button class="cta sec" id="rerun">다른 브랜드로 다시</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY / METHOD -->
+<section class="w" id="method">
+  <p class="eyebrow">방법론 — 저희가 다른 이유</p>
+  <h2>"한 번 물어본 것은 주사위 1회입니다"</h2>
+  <p class="sub">AI의 답변은 확률적이라 매번 다릅니다. 화면 캡처 한 장은 증거가 아니라 우연입니다. 보임은 측정 프로토콜 자체가 제품입니다.</p>
+  <div class="m4">
+    <div class="card"><span class="n">1</span><b>반복 실행 + 95% 신뢰구간</b><p>질의 50 × 엔진 4종 × 반복 3회 = 600회. 언급률은 항상 Wilson 신뢰구간과 함께 보고합니다 — 오차범위 없는 수치는 믿지 마세요.</p></div>
+    <div class="card"><span class="n">2</span><b>질문 유형 분리 집계</b><p>"브랜드명을 아는 사람의 질문"(잘 나옴)과 "모르는 새 고객의 질문"(진짜 싸움터)을 섞으면 착시가 생깁니다. 유형별로 따로 셉니다.</p></div>
+    <div class="card"><span class="n">3</span><b>전후 비교 통계 검정</b><p>개선 후 같은 질문 세트로 재측정하고, 상승이 우연인지 z-검정(p&lt;0.05)으로 판정합니다. 다이어트는 체중계로 증명합니다.</p></div>
+    <div class="card"><span class="n">4</span><b>원자료 전량 공개</b><p>600회의 질문·답변·인용 출처가 담긴 CSV를 통째로 드립니다. 저희 숫자를 믿지 말고 직접 확인하세요.</p></div>
+  </div>
+  <p class="micro" style="margin-top:14px">근거: 콘텐츠에 통계·인용·출처를 추가하면 AI 답변 가시성 최대 +40%, 저순위 브랜드에선 +98~115% — Aggarwal et al., KDD 2024 통제실험(arXiv:2311.09735) · 브랜드 웹 멘션은 백링크보다 3배 강한 신호(r=0.664 vs 0.218) — Ahrefs 75,000 브랜드 연구</p>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="w">
+  <p class="eyebrow">진단 리포트에 담기는 것</p>
+  <h2>어느 관문에서 떨어지는지, 무엇부터 고칠지</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <tr><th>관문</th><th>질문</th><th>떨어졌을 때의 처방</th></tr>
+      <tr><td><b>① 검색</b><div class="d">AI가 존재를 아는가</div></td><td>크롤러 차단·렌더링 문제로 아예 못 읽는가?</td><td>기술 감사 실측 — AI 크롤러 8종 허용 여부·스니펫 차단·본문 노출을 직접 검사</td></tr>
+      <tr><td><b>② 선택</b><div class="d">추천 목록에 올리는가</div></td><td>읽었지만 인용할 거리가 없는가?</td><td>직답 구조·통계·출처 삽입 — 페이지 단위 리팩토링 명세 제공</td></tr>
+      <tr><td><b>③ 흡수</b><div class="d">답변 내용을 채우는가</div></td><td>언급은 되지만 내용은 경쟁사 것인가?</td><td>남들이 인용할 자체 데이터·비교표 설계</td></tr>
+    </table>
+  </div>
+  <p class="sub" style="margin-top:16px">+ 경쟁사 대비 점유율(SOV) · <b>AI가 근거로 쓰는 인용원 Top 10</b>(공략 채널이 여기서 나옵니다) · 네이버 AI 검색 수동 확인 · 90일 실행 로드맵. <b>한국 특화</b>: 한국 고객은 AI로 탐색하고 네이버로 검증합니다 — 글로벌 도구는 이 깔때기의 절반을 보지 못합니다.</p>
+</section>
+
+<!-- PRICING -->
+<section class="w" id="pricing">
+  <p class="eyebrow">가격</p>
+  <h2>진단으로 시작해, 증명으로 이어갑니다</h2>
+  <div class="plans" style="margin-top:24px">
+    <div class="plan">
+      <h3>라이트 스캔</h3><div class="price">무료</div><div class="per">셀프서브 · 30초</div>
+      <ul><li>질의 12 × 엔진 2 라이트 실측</li><li>AI 가시성 점수·언급률 요약</li><li>1페이지 리포트</li></ul>
+      <a class="cta sec" href="#demo">데모 먼저 체험</a>
+    </div>
+    <div class="plan hot">
+      <h3>정밀 진단 리포트</h3><div class="price">₩190만</div><div class="per">1회 · 2주 · 귀사 시간 2시간</div>
+      <ul><li>질의 50 × 엔진 4 × 반복 3 = 600회 실측</li><li>95% 신뢰구간·유형별 분리·3관문 진단</li><li>인용원 Top 10 + 기술 감사 + 네이버 수동</li><li>페이지 단위 처방 + 90일 로드맵</li><li>원자료 600행 CSV 전량 제공</li></ul>
+      <button class="cta" onclick="applyPilot()">무료 파일럿 신청 (선착 5팀)</button>
+    </div>
+    <div class="plan">
+      <h3>성장 리테이너</h3><div class="price">월 ₩240만~</div><div class="per">3개월~ · 실행 대행</div>
+      <ul><li>월 12페이지 콘텐츠 리팩토링</li><li>주간 언급률 추적 + 변동 알림</li><li>분기별 전후 z-검정 리포트</li><li>네이버·커뮤니티 진성 언급 설계</li></ul>
+      <button class="cta sec" onclick="applyPilot()">상담 신청</button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="w" id="faq">
+  <p class="eyebrow">FAQ</p>
+  <h2>자주 묻는 질문</h2>
+  <div style="margin-top:10px">
+    <details><summary>GEO(생성형 엔진 최적화)가 뭔가요?</summary><p>ChatGPT·Perplexity·Gemini 같은 AI 검색 엔진의 답변에 브랜드가 인용되도록 최적화하는 작업입니다. SEO가 "구글 첫 페이지 싸움"이었다면 GEO는 "AI의 한 문단짜리 답변 안에 들어가는 싸움"입니다. 학술 통제실험(KDD 2024)에서 통계·인용·출처를 추가하면 가시성이 최대 40% 오르는 것이 검증됐습니다.</p></details>
+    <details><summary>직접 ChatGPT에 물어보면 되지 않나요?</summary><p>됩니다 — 단 그것은 주사위 1회입니다. AI 답변은 확률적이라 매번 다릅니다. 보임은 같은 질문을 반복 실행해 오차범위를 붙이고, 새 고객형 질문과 브랜드형 질문을 분리 집계하며, 개선 후 같은 조건으로 재측정할 기준선을 남깁니다.</p></details>
+    <details><summary>측정에 쓰는 AI는 실제 사용자가 보는 것과 같나요?</summary><p>API 기반의 "중립 상태" 답변으로 측정하며, 개인 맞춤화가 적용된 실제 앱 화면과 다를 수 있습니다. 그래서 일부 질문은 로그아웃 상태의 실제 앱에서 수동 대조합니다. 저희는 이 한계를 리포트에 명시합니다 — 아는 한계를 숨기지 않는 것이 저희 방법론의 일부입니다.</p></details>
+    <details><summary>점수가 낮게 나오면 어떡하죠?</summary><p>낮은 점수는 가장 좋은 시작점입니다. KDD 2024 통제실험에서 현재 노출이 낮은(3~10위권) 콘텐츠일수록 구조 개선 효과가 +98~115%로 극대화됐습니다. 이미 1위인 브랜드보다 오를 여지가 훨씬 큽니다.</p></details>
+    <details><summary>네이버도 봐주나요?</summary><p>네. 한국 고객은 AI로 1차 탐색하고 네이버로 교차 검증합니다. 네이버 AI 검색은 공개 API가 없어 수동 프로토콜로 측정하며, 자동 측정과 분리해 정직하게 병기합니다. 글로벌 GEO 도구가 구조적으로 못 보는 영역입니다.</p></details>
+    <details><summary>왜 파일럿은 무료인가요?</summary><p>초기 5개 브랜드의 실측 사례를 만들기 위해서입니다. 결과가 좋았던 경우 실명 사례 공개를 요청드릴 수 있습니다(선택 사항).</p></details>
+  </div>
+</section>
+
+<footer><div class="w">
+  <b style="color:var(--ink)">보<b style="color:var(--s1)">임</b> BOIM</b> — AI 검색 가시성 실측 진단 · "챗GPT에 물으면, 경쟁사만 나옵니다"<br>
+  정직 고지: API 응답은 소비자 앱 답변과 다를 수 있으며(개인화·라우팅), 데모 수치는 시뮬레이션입니다. 모든 실측 리포트에는 반복 횟수·신뢰구간·원자료가 포함됩니다.<br>
+  © 2026 BOIM (베타) · 이 페이지 자체가 GEO 원칙(직답·통계·출처·FAQ 구조)을 따릅니다.
+</div></footer>
+
+<!-- modal -->
+<div id="modal" role="dialog" aria-modal="true">
+  <div class="mbox">
+    <h3 id="mTitle">무료 파일럿 신청</h3>
+    <p id="mBody"></p>
+    <button class="cta" id="mAction"></button>
+    <button class="ghost" style="width:100%;margin-top:8px" onclick="document.getElementById('modal').classList.remove('on')">닫기</button>
+  </div>
+</div>
+
+<script>
+/* ===== 연락처 설정: 아래 값만 채우면 신청 CTA가 mailto로 활성화됩니다 ===== */
+const CONTACT_EMAIL = ""; // 예: "hello@boim.kr"
+
+const $=id=>document.getElementById(id);
+$('themeToggle').onclick=()=>{const r=document.documentElement;
+  const cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  r.dataset.theme=cur==='dark'?'light':'dark'};
+
+function applyPilot(){
+  const m=$('modal');m.classList.add('on');
+  if(CONTACT_EMAIL){
+    $('mTitle').textContent='무료 파일럿 신청 (선착 5팀)';
+    $('mBody').textContent='아래 버튼을 누르면 신청 메일 양식이 열립니다. 브랜드명·업종·경쟁사 2곳을 적어 보내주시면 48시간 내 회신드립니다.';
+    $('mAction').textContent='신청 메일 보내기';
+    $('mAction').onclick=()=>location.href=`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('[보임 무료 파일럿 신청]')}&body=${encodeURIComponent('브랜드명:\n업종:\n경쟁사 2곳:\n담당자·연락처:')}`;
+  }else{
+    $('mTitle').textContent='베타 신청 오픈 준비 중';
+    $('mBody').textContent='보임은 현재 비공개 파일럿을 준비하고 있습니다. 신청 접수가 열리면 이 페이지에서 바로 안내됩니다 — 그동안 데모로 진단 리포트의 생김새를 확인해 보세요.';
+    $('mAction').textContent='데모 체험하기';
+    $('mAction').onclick=()=>{$('modal').classList.remove('on');location.hash='#demo'};
+  }
+}
+window.applyPilot=applyPilot;
+
+/* ---------- demo (시드 기반 시뮬레이션 — 바이럴 키트와 동일 로직) ---------- */
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){let s=seed||1;return()=>{s=Math.imul(48271,s)%2147483647;return(s&2147483647)/2147483647}}
+function wilson(p,n){const z=1.96,d=1+z*z/n,c=p+z*z/(2*n),m=z*Math.sqrt((p*(1-p)+z*z/(4*n))/n);
+  return[Math.max(0,(c-m)/d),Math.min(1,(c+m)/d)]}
+function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+const state={};
+function autoComp(b){const pool=['캔바','망고보드','어도비 익스프레스','피그마','경쟁사A'];return pool[hash(b)%pool.length]}
+const LOG=b=>[
+ `질의셋 생성 — "${esc(state.cat)}" 실사용 질문 12개 (추천 4 · 비교 3 · 문제해결 3 · 브랜드 2)`,
+ `ChatGPT (web_search) 실행 중 … 4/6`,
+ `Gemini (google_search grounding) 실행 중 … 6/6`,
+ `브랜드·경쟁사 언급 감지 (별칭 사전: ${esc(b)} · ${esc(state.comp)})`,
+ `인용원 도메인 수집 — 티스토리, 유튜브, 나무위키 …`,
+ `언급률 집계 + Wilson 95% 신뢰구간 계산`,
+ `✓ 24콜 완료 · 시뮬레이션 3.2초`];
+$('runScan').onclick=run;
+$('rerun').onclick=()=>{$('reveal').classList.remove('on');$('scanCard').style.display='grid';
+  $('fBrand').focus();window.scrollTo({top:$('demo').offsetTop-40,behavior:'smooth'})};
+function run(){
+  state.brand=($('fBrand').value.trim()||'미리캔버스');
+  state.comp=($('fComp').value.trim()||autoComp(state.brand));
+  state.cat=$('fCat').value;
+  const h=hash(state.brand),r=rng(h);
+  state.nRec=8;
+  state.meRate=Math.min(.92,.04+r()*0.55);
+  state.compRate=Math.min(.95,state.meRate+.15+r()*.35);
+  state.meRec=Math.max(0,Math.min(.85,state.meRate*.35));
+  state.compRec=Math.min(.97,state.compRate+.08);
+  state.comp2=autoComp(state.brand+'x')===state.comp?'어도비 익스프레스':autoComp(state.brand+'x');
+  state.comp2Rec=Math.max(.02,state.meRate*.2+r()*.15);
+  state.score=Math.round(state.meRate*70+r()*18);
+  $('scanCard').style.display='none';$('reveal').classList.remove('on');
+  const th=$('theater');th.classList.add('on');
+  $('theaterTitle').textContent=`"${state.brand}" 데모 측정 중 — 고객의 질문 12개 × 엔진 2종`;
+  const log=$('tlog');log.innerHTML='';
+  const lines=LOG(state.brand);let i=0;
+  (function step(){ if(i<lines.length){
+      const d=document.createElement('div');d.innerHTML=lines[i];log.appendChild(d);
+      requestAnimationFrame(()=>d.classList.add('show'));
+      $('tbar').style.width=Math.round((i+1)/lines.length*100)+'%';
+      i++;setTimeout(step,i===1?650:500);
+    } else setTimeout(revealNow,400)})();
+}
+function revealNow(){
+  $('theater').classList.remove('on');
+  const rv=$('reveal');rv.classList.add('on');
+  const me=Math.round(state.meRec*state.nRec),cp=Math.round(state.compRec*state.nRec),s=state.score,k=$('vKicker');
+  let cls,kl,head,sub;
+  if(s<40){cls='crit';kl='⚠ 진단: 보이지 않음';
+    head=`챗GPT에 물으면, ${state.comp}만 나옵니다.`;
+    sub=`"${state.cat} 추천해줘" — 이름을 모르는 새 고객의 질문에서 ${state.brand}는 사실상 부재합니다. 지금 이 순간에도 AI는 ${state.comp}를 먼저 말하고 있습니다.`;}
+  else if(s<70){cls='warn';kl='◐ 진단: 절반만 보임';
+    head=`${state.brand}, 보이긴 합니다. 새 고객에게는 아닙니다.`;
+    sub=`브랜드형 질문에는 나오지만, 추천형 질문에서는 ${state.comp}에 밀립니다 — 신규 유입이 새는 지점입니다.`;}
+  else{cls='good';kl='✓ 진단: 상위권';
+    head=`${state.brand}, 지금은 보입니다. 지키는 싸움이 시작됩니다.`;
+    sub=`상위권입니다. 다만 AI 답변은 매주 바뀝니다 — 오늘의 순위를 지키는 모니터링이 필요한 단계입니다.`;}
+  k.className='vk '+cls;k.textContent=kl;
+  $('vHead').textContent=head;$('vSub').textContent=sub;$('vScore').textContent=s;
+  $('vKiller').innerHTML=`잠재 고객이 "${esc(state.cat)} 추천해줘"라고 물은 <b>${state.nRec}번 중 ${esc(state.brand)}는 ${me}번</b> 등장했습니다. <b>${esc(state.comp)}는 ${cp}번</b>입니다.`;
+  const rows=[{n:state.brand,v:state.meRec,me:true},{n:state.comp,v:state.compRec},{n:state.comp2,v:state.comp2Rec}];
+  $('barRows').innerHTML=rows.map(x=>{
+    const [lo,hi]=wilson(x.v,state.nRec),p=Math.round(x.v*100);
+    return `<div class="brow${x.me?' me':''}"><div class="bl">${esc(x.n)}</div>
+      <div class="btrack"><div class="bfill" style="width:${p}%"></div>
+      <div class="ci" style="left:${Math.round(lo*100)}%;width:${Math.max(2,Math.round((hi-lo)*100))}%"></div></div>
+      <div class="bv">${p}% <em>(${Math.round(lo*100)}–${Math.round(hi*100)})</em></div></div>`}).join('');
+  $('vTypeNote').textContent=`참고: 브랜드형 질문("${state.brand} 어때?")에서는 언급률이 ~100%에 가깝습니다. 유형을 섞어 평균 내면 이 부재가 가려지므로, 보임은 유형별로 분리 집계합니다.`;
+  $('vFact').innerHTML=`몰랐던 사실 하나 — 이 답변들의 인용원 1위는 <b>${esc(state.brand)}의 채널이 아니라 티스토리·유튜브의 남이 쓴 글</b>입니다. AI가 당신 이야기를 어디서 듣는지가 다음 싸움터입니다.`;
+  rv.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
