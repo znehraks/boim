@@ -11,9 +11,10 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%232a78d6'/><text x='50' y='66' font-size='48' font-weight='800' text-anchor='middle' fill='white' font-family='sans-serif'>보</text></svg>">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"GEO(생성형 엔진 최적화)가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"GEO는 ChatGPT·Perplexity·Gemini 같은 AI 검색 엔진의 답변에 브랜드가 인용되도록 최적화하는 작업입니다. 학술 통제실험(KDD 2024)에서 콘텐츠에 통계·인용·출처를 추가하면 AI 답변 가시성이 최대 40% 상승함이 검증됐습니다."},
-{"@type":"Question","name":"보임(BOIM)은 무엇을 측정하나요?","acceptedAnswer":{"@type":"Answer","text":"고객이 실제로 묻는 질문 50개를 AI 엔진 4종에 각 3회씩 총 600회 실행해, 브랜드 언급률(95% 신뢰구간), 경쟁사 대비 점유율, AI가 근거로 쓴 인용원 도메인, 탈락 지점을 측정합니다. 원자료 600행 CSV를 전량 공개합니다."},
-{"@type":"Question","name":"직접 ChatGPT에 물어보는 것과 무엇이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"AI의 답변은 확률적이라 매번 달라집니다. 한 번의 질문은 주사위 1회와 같습니다. 보임은 같은 질문을 반복 실행하고 여론조사처럼 오차범위를 붙여 보고하며, 개선 후 같은 질문 세트로 재측정해 변화가 우연인지 통계 검정(z-검정)으로 판정합니다."}]}
+{"@type":"Question","name":"GEO(생성형 엔진 최적화)가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"GEO는 ChatGPT·Perplexity·Gemini 같은 AI 검색 엔진의 답변에 브랜드가 인용되도록 최적화하는 작업입니다. 학술 통제실험(KDD 2024)에서 콘텐츠에 통계·인용·출처를 추가하면 AI 답변 가시성이 최대 40% 상승함이 검증됐습니다."}},
+{"@type":"Question","name":"보임(BOIM)은 무엇을 측정하나요?","acceptedAnswer":{"@type":"Answer","text":"고객이 실제로 묻는 질문 50개를 AI 엔진 4종에 각 3회씩 총 600회 실행해, 브랜드 언급률(95% 신뢰구간), 경쟁사 대비 점유율, AI가 근거로 쓴 인용원 도메인, 탈락 지점을 측정합니다. 원자료 600행 CSV를 전량 공개합니다."}},
+{"@type":"Question","name":"직접 ChatGPT에 물어보는 것과 무엇이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"AI의 답변은 확률적이라 매번 달라집니다. 한 번의 질문은 주사위 1회와 같습니다. 보임은 같은 질문을 반복 실행하고 여론조사처럼 오차범위를 붙여 보고하며, 질문 되받기(에코)를 제외한 우호적 추천율로 집계하고, 개선 후 같은 질문 세트로 재측정해 변화가 우연인지 통계 검정으로 판정합니다."}},
+{"@type":"Question","name":"GEO 효과는 얼마나 빨리 나타나나요?","acceptedAnswer":{"@type":"Answer","text":"통상 4~8주입니다. AI가 콘텐츠를 재수집하고 답변에 흡수하는 주기가 있어 즉시 효과는 불가능하며, AI 인용은 복리형으로 쌓입니다. 상위 브랜드가 임계질량을 넘기면 카테고리가 잠기므로(상위 25% 브랜드가 10배 이상 인용 — Ahrefs 75,000 브랜드 연구), GEO는 속도가 아니라 순서의 싸움입니다."}}]}
 </script>
 <style>
   :root{--s1:#2a78d6;--s1soft:#cde2fb;--ink:#0b0b0b;--ink2:#52514e;--mut:#898781;--grid:#e1e0d9;
@@ -170,6 +171,11 @@
     <div class="stat"><b>+42%</b><span>AI 경유 방문자의 구매 전환율 우위<i class="src"> · Adobe Analytics, 미국 리테일</i></span></div>
     <div class="stat"><b>15%→8%</b><span>AI 요약이 뜨면 링크 클릭은 반토막<i class="src"> · Pew Research</i></span></div>
   </div>
+
+  <div class="card" style="margin-top:16px;border-left:3px solid var(--s1)">
+    <b style="font-size:15px">보임은 조준경입니다 — 폭발이 아니라 선점을 팝니다.</b>
+    <p style="font-size:13.5px;color:var(--ink2);margin-top:6px">AI 답변 인용은 광고처럼 터지지 않습니다. <b>4~8주에 걸쳐 복리로 쌓이는 인프라</b>이고, 임계질량을 넘긴 브랜드가 카테고리를 잠급니다(상위 25% 브랜드가 하위보다 10배 이상 인용 — Ahrefs). 즉시·폭발 트래픽을 약속하는 곳을 조심하세요. 보임이 약속하는 것은 두 가지입니다: <b>지금 어디에 있는지 정확히 재는 것, 그리고 고친 뒤 정말 올랐는지 통계로 증명하는 것.</b></p>
+  </div>
 </header>
 
 <!-- DEMO -->
@@ -199,11 +205,11 @@
       <h3 class="verdict" id="vHead"></h3>
       <p class="vsub" id="vSub"></p>
       <div class="hero-num" id="vScore">–</div>
-      <div class="hero-cap">AI 가시성 점수 (0–100) · 데모: 질의 12 × 엔진 2 시뮬레이션</div>
+      <div class="hero-cap">AI 가시성 지수 (0–100, 참고 보조지표) · 데모: 질의 12 × 엔진 2 시뮬레이션</div>
       <div class="killer" id="vKiller"></div>
       <div style="margin-top:20px">
-        <b style="font-size:13.5px;color:var(--ink2)">추천형 질문 언급률 — 신규 고객이 묻는 방식</b>
-        <p class="axcap">언급률(%) · 오차막대 = Wilson 95% 신뢰구간 · 시뮬레이션</p>
+        <b style="font-size:13.5px;color:var(--ink2)">추천형 질문의 우호적 추천율 — 신규 고객이 묻는 방식</b>
+        <p class="axcap">추천율(%) · 오차막대 = Wilson 95% 신뢰구간 · 질문 되받기(에코)는 추천으로 치지 않음 · 시뮬레이션</p>
         <div id="barRows"></div>
         <div class="legend"><span><i class="sw" style="background:var(--s1)"></i>내 브랜드</span><span><i class="sw" style="background:var(--base)"></i>경쟁사</span></div>
         <p class="axcap" id="vTypeNote" style="margin-top:10px"></p>
@@ -224,7 +230,7 @@
   <p class="sub">AI의 답변은 확률적이라 매번 다릅니다. 화면 캡처 한 장은 증거가 아니라 우연입니다. 보임은 측정 프로토콜 자체가 제품입니다.</p>
   <div class="m4">
     <div class="card"><span class="n">1</span><b>반복 실행 + 95% 신뢰구간</b><p>질의 50 × 엔진 4종 × 반복 3회 = 600회. 언급률은 항상 Wilson 신뢰구간과 함께 보고합니다 — 오차범위 없는 수치는 믿지 마세요.</p></div>
-    <div class="card"><span class="n">2</span><b>질문 유형 분리 집계</b><p>"브랜드명을 아는 사람의 질문"(잘 나옴)과 "모르는 새 고객의 질문"(진짜 싸움터)을 섞으면 착시가 생깁니다. 유형별로 따로 셉니다.</p></div>
+    <div class="card"><span class="n">2</span><b>추천율로 셉니다 — 되받기는 제외</b><p>"OO 어때?"라는 질문에 AI가 "OO는…"이라고 되받는 것은 추천이 아닙니다. 보임은 에코·부정 언급을 제외한 <b>우호적 추천율</b>과 <b>1순위 제시율</b>을 헤드라인으로 보고합니다. 단순 언급률은 참고 보조로만.</p></div>
     <div class="card"><span class="n">3</span><b>전후 비교 통계 검정</b><p>개선 후 같은 질문 세트로 재측정하고, 상승이 우연인지 z-검정(p&lt;0.05)으로 판정합니다. 다이어트는 체중계로 증명합니다.</p></div>
     <div class="card"><span class="n">4</span><b>원자료 전량 공개</b><p>600회의 질문·답변·인용 출처가 담긴 CSV를 통째로 드립니다. 저희 숫자를 믿지 말고 직접 확인하세요.</p></div>
   </div>
@@ -258,7 +264,7 @@
     </div>
     <div class="plan hot">
       <h3>정밀 진단 리포트</h3><div class="price">₩190만</div><div class="per">1회 · 2주 · 귀사 시간 2시간</div>
-      <ul><li>질의 50 × 엔진 4 × 반복 3 = 600회 실측</li><li>95% 신뢰구간·유형별 분리·3관문 진단</li><li>인용원 Top 10 + 기술 감사 + 네이버 수동</li><li>페이지 단위 처방 + 90일 로드맵</li><li>원자료 600행 CSV 전량 제공</li></ul>
+      <ul><li>질의 50 × 엔진 4 × 반복 3 = 600회 실측</li><li>우호적 추천율·1순위 제시율 (에코 제외, 95% CI)</li><li>인용원 Top 10 + 기술 감사 + 네이버 수동</li><li>페이지 단위 처방 + 90일 로드맵</li><li>원자료 600행 CSV 전량 제공</li></ul>
       <button class="cta" onclick="applyPilot()">무료 파일럿 신청 (선착 5팀)</button>
     </div>
     <div class="plan">
@@ -279,6 +285,8 @@
     <details><summary>측정에 쓰는 AI는 실제 사용자가 보는 것과 같나요?</summary><p>API 기반의 "중립 상태" 답변으로 측정하며, 개인 맞춤화가 적용된 실제 앱 화면과 다를 수 있습니다. 그래서 일부 질문은 로그아웃 상태의 실제 앱에서 수동 대조합니다. 저희는 이 한계를 리포트에 명시합니다 — 아는 한계를 숨기지 않는 것이 저희 방법론의 일부입니다.</p></details>
     <details><summary>점수가 낮게 나오면 어떡하죠?</summary><p>낮은 점수는 가장 좋은 시작점입니다. KDD 2024 통제실험에서 현재 노출이 낮은(3~10위권) 콘텐츠일수록 구조 개선 효과가 +98~115%로 극대화됐습니다. 이미 1위인 브랜드보다 오를 여지가 훨씬 큽니다.</p></details>
     <details><summary>네이버도 봐주나요?</summary><p>네. 한국 고객은 AI로 1차 탐색하고 네이버로 교차 검증합니다. 네이버 AI 검색은 공개 API가 없어 수동 프로토콜로 측정하며, 자동 측정과 분리해 정직하게 병기합니다. 글로벌 GEO 도구가 구조적으로 못 보는 영역입니다.</p></details>
+    <details><summary>얼마나 빨리 효과가 나나요?</summary><p>4~8주입니다 — AI가 콘텐츠를 다시 수집하고 답변에 흡수하는 주기가 있기 때문입니다. 보임은 즉시·폭발적 트래픽을 약속하지 않습니다. AI 인용은 복리형 인프라라서, 임계질량을 먼저 넘긴 브랜드가 카테고리를 잠급니다. 그래서 이 싸움은 속도가 아니라 <b>순서</b> 싸움이고, 효과는 재측정 통계 검정으로 확인한 뒤 다음 단계로 갑니다.</p></details>
+    <details><summary>커뮤니티에 홍보 글을 심어주나요?</summary><p>아니요, 하지 않습니다. AI 인용원 상위에 커뮤니티가 있다고 해서 위장 글을 심는 것(astroturfing)은 표시광고법·뒷광고 제재 대상이며 AI 신호를 오히려 훼손합니다. 보임은 인용원 지도를 드리고, 그 채널에서 <b>진짜 기여로 언급될 방법</b>을 설계합니다. 조작을 팔지 않는 것이 측정 기관으로서 저희 존재 조건입니다.</p></details>
     <details><summary>왜 파일럿은 무료인가요?</summary><p>초기 5개 브랜드의 실측 사례를 만들기 위해서입니다. 결과가 좋았던 경우 실명 사례 공개를 요청드릴 수 있습니다(선택 사항).</p></details>
   </div>
 </section>
@@ -384,7 +392,7 @@ function revealNow(){
     sub=`상위권입니다. 다만 AI 답변은 매주 바뀝니다 — 오늘의 순위를 지키는 모니터링이 필요한 단계입니다.`;}
   k.className='vk '+cls;k.textContent=kl;
   $('vHead').textContent=head;$('vSub').textContent=sub;$('vScore').textContent=s;
-  $('vKiller').innerHTML=`잠재 고객이 "${esc(state.cat)} 추천해줘"라고 물은 <b>${state.nRec}번 중 ${esc(state.brand)}는 ${me}번</b> 등장했습니다. <b>${esc(state.comp)}는 ${cp}번</b>입니다.`;
+  $('vKiller').innerHTML=`잠재 고객이 "${esc(state.cat)} 추천해줘"라고 물은 <b>${state.nRec}번 중 ${esc(state.brand)}는 ${me}번</b> 추천으로 등장했습니다. <b>${esc(state.comp)}는 ${cp}번</b>입니다. (질문 되받기는 제외한 수치)`;
   const rows=[{n:state.brand,v:state.meRec,me:true},{n:state.comp,v:state.compRec},{n:state.comp2,v:state.comp2Rec}];
   $('barRows').innerHTML=rows.map(x=>{
     const [lo,hi]=wilson(x.v,state.nRec),p=Math.round(x.v*100);
@@ -392,7 +400,7 @@ function revealNow(){
       <div class="btrack"><div class="bfill" style="width:${p}%"></div>
       <div class="ci" style="left:${Math.round(lo*100)}%;width:${Math.max(2,Math.round((hi-lo)*100))}%"></div></div>
       <div class="bv">${p}% <em>(${Math.round(lo*100)}–${Math.round(hi*100)})</em></div></div>`}).join('');
-  $('vTypeNote').textContent=`참고: 브랜드형 질문("${state.brand} 어때?")에서는 언급률이 ~100%에 가깝습니다. 유형을 섞어 평균 내면 이 부재가 가려지므로, 보임은 유형별로 분리 집계합니다.`;
+  $('vTypeNote').textContent=`참고: "${state.brand} 어때?"처럼 질문에 이름이 든 경우, AI가 되받기만 해도 '언급'으로 잡힙니다. 보임은 이런 에코를 추천 집계에서 제외하고, 유형을 섞지 않고 분리 집계합니다 — 섞으면 착시가 생기니까요.`;
   $('vFact').innerHTML=`몰랐던 사실 하나 — 이 답변들의 인용원 1위는 <b>${esc(state.brand)}의 채널이 아니라 티스토리·유튜브의 남이 쓴 글</b>입니다. AI가 당신 이야기를 어디서 듣는지가 다음 싸움터입니다.`;
   rv.scrollIntoView({behavior:'smooth',block:'start'});
 }
